@@ -11,13 +11,14 @@ from werkzeug.utils import secure_filename
 
 from charts import generate_all_charts
 
+import tempfile
+
 # ──────────────────────────────────────────────
 #  Flask App Configuration
 # ──────────────────────────────────────────────
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__)
-app.config["UPLOAD_FOLDER"] = os.path.join(BASE_DIR, "uploads")
-app.config["REPORT_FOLDER"] = os.path.join(BASE_DIR, "reports")
+app.config["UPLOAD_FOLDER"] = os.path.join(tempfile.gettempdir(), "csv_uploads")
+app.config["REPORT_FOLDER"] = os.path.join(tempfile.gettempdir(), "csv_reports")
 app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 * 1024  # 50 MB
 
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
