@@ -14,9 +14,10 @@ from charts import generate_all_charts
 # ──────────────────────────────────────────────
 #  Flask App Configuration
 # ──────────────────────────────────────────────
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__)
-app.config["UPLOAD_FOLDER"] = "uploads"
-app.config["REPORT_FOLDER"] = "reports"
+app.config["UPLOAD_FOLDER"] = os.path.join(BASE_DIR, "uploads")
+app.config["REPORT_FOLDER"] = os.path.join(BASE_DIR, "reports")
 app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 * 1024  # 50 MB
 
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
@@ -793,4 +794,4 @@ def download_report(fmt, filename):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
