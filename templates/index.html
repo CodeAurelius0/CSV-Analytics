@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Universal CSV Analytics Platform — Upload any CSV and get instant interactive dashboards, KPIs, AI insights, and downloadable reports." />
-  <title>Universal CSV Analytics Platform</title>
+  <meta name="description" content="CSV Analytics — Upload any CSV and get instant interactive dashboards, KPIs, statistics, and downloadable reports." />
+  <title>CSV Analytics · v1.0</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
@@ -24,44 +24,56 @@
 
   <!-- ══════════════ SIDEBAR ══════════════ -->
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
-      <i class="bi bi-bar-chart-fill"></i>
-      <span>Analytics</span>
+
+    <!-- Logo / Brand -->
+    <div class="sidebar-brand">
+      <div class="brand-icon"><i class="bi bi-bar-chart-fill"></i></div>
+      <div class="brand-text">
+        <span class="brand-name">telemetry</span>
+        <span class="brand-version">v0.9.4</span>
+      </div>
+      <div class="status-dot" id="status-dot" title="idle"></div>
     </div>
 
-    <nav class="sidebar-nav" id="sidebar-nav">
+    <!-- Nav Groups -->
+    <div class="nav-group">
+      <div class="nav-group-label">EXPLORE</div>
       <a href="#" class="nav-item active" data-section="overview" id="nav-overview">
         <i class="bi bi-grid-fill"></i><span>Overview</span>
       </a>
-      <a href="#" class="nav-item" data-section="sales" id="nav-sales">
+      <a href="#" class="nav-item disabled" data-section="sales" id="nav-sales">
         <i class="bi bi-currency-dollar"></i><span>Sales</span>
       </a>
-      <a href="#" class="nav-item" data-section="timeseries" id="nav-timeseries">
+      <a href="#" class="nav-item disabled" data-section="timeseries" id="nav-timeseries">
         <i class="bi bi-graph-up-arrow"></i><span>Time Series</span>
       </a>
-      <a href="#" class="nav-item" data-section="profit" id="nav-profit">
+      <a href="#" class="nav-item disabled" data-section="profit" id="nav-profit">
         <i class="bi bi-cash-stack"></i><span>Profit</span>
       </a>
-      <a href="#" class="nav-item" data-section="customers" id="nav-customers">
+      <a href="#" class="nav-item disabled" data-section="customers" id="nav-customers">
         <i class="bi bi-people-fill"></i><span>Customers</span>
       </a>
-      <a href="#" class="nav-item" data-section="products" id="nav-products">
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">ANALYSIS</div>
+      <a href="#" class="nav-item disabled" data-section="products" id="nav-products">
         <i class="bi bi-box-seam"></i><span>Products</span>
       </a>
-      <a href="#" class="nav-item" data-section="regional" id="nav-regional">
+      <a href="#" class="nav-item disabled" data-section="regional" id="nav-regional">
         <i class="bi bi-geo-alt-fill"></i><span>Regional</span>
       </a>
-      <a href="#" class="nav-item" data-section="statistics" id="nav-statistics">
+      <a href="#" class="nav-item disabled" data-section="statistics" id="nav-statistics">
         <i class="bi bi-calculator"></i><span>Statistics</span>
       </a>
-      <a href="#" class="nav-item" data-section="insights" id="nav-insights">
-        <i class="bi bi-lightbulb-fill"></i><span>Insights</span>
+      <a href="#" class="nav-item disabled" data-section="insights" id="nav-insights">
+        <i class="bi bi-stars"></i><span>Model Insights</span>
       </a>
-    </nav>
+    </div>
 
-    <div class="sidebar-footer">
-      <button id="theme-btn" class="btn-icon-lg" title="Toggle Dark/Light Mode">
-        <i class="bi bi-brightness-high-fill"></i>
+    <div class="sidebar-bottom">
+      <button id="theme-btn" class="theme-toggle" title="Toggle theme">
+        <i class="bi bi-moon-fill"></i>
       </button>
     </div>
   </aside>
@@ -69,65 +81,133 @@
   <!-- ══════════════ MAIN AREA ══════════════ -->
   <div class="main-wrapper">
 
-    <!-- TOP NAVBAR -->
-    <header class="topbar glassmorphism">
-      <button class="sidebar-toggle" id="sidebar-toggle" title="Toggle Sidebar">
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <button class="sidebar-toggle" id="sidebar-toggle">
         <i class="bi bi-list"></i>
       </button>
-      <div class="topbar-title" id="topbar-title">
-        <i class="bi bi-upload"></i>&nbsp; Upload a CSV to begin analysis
+
+      <!-- Breadcrumb -->
+      <div class="topbar-breadcrumb">
+        <span class="bc-seg">workspace</span>
+        <span class="bc-sep">/</span>
+        <span class="bc-seg">default</span>
+        <span class="bc-sep">/</span>
+        <span class="bc-seg bc-active" id="bc-page">overview</span>
       </div>
-      <div class="topbar-actions" id="topbar-actions">
-        <!-- Populated after upload -->
+
+      <div class="topbar-spacer"></div>
+
+      <!-- Dataset info pills -->
+      <div class="topbar-pills" id="topbar-pills">
+        <span class="topbar-pill">
+          <span class="pill-label">dataset:</span>
+          <span class="pill-val" id="pill-dataset-val">none active</span>
+        </span>
+        <span class="topbar-pill">
+          <span class="pill-label">heap:</span>
+          <span class="pill-val">142.4 MB</span>
+        </span>
       </div>
+
+      <!-- Import CSV button -->
+      <button class="btn-import" id="import-csv-btn">
+        <i class="bi bi-plus"></i> Import CSV
+        <span class="import-badge">i</span>
+      </button>
+      <input type="file" id="file-input" accept=".csv,.xlsx,.xls" hidden />
     </header>
 
-    <!-- ── UPLOAD PAGE ── -->
-    <section id="page-upload" class="page active">
-      <div class="upload-hero">
-        <div class="hero-badge"><i class="bi bi-stars"></i> AI-Powered Analytics</div>
-        <h1 class="hero-title">Analyze Any Dataset<br><span class="gradient-text">Instantly.</span></h1>
-        <p class="hero-subtitle">
-          Upload any CSV file and get interactive dashboards, KPI cards, business insights,
-          statistical analysis, and downloadable PDF/Excel reports — automatically.
-        </p>
+    <!-- ── OVERVIEW PAGE ── -->
+    <section id="page-overview" class="page active">
+      <div class="page-content">
 
-        <!-- Feature Pills -->
-        <div class="feature-pills">
-          <span class="pill"><i class="bi bi-lightning-fill"></i> Instant KPIs</span>
-          <span class="pill"><i class="bi bi-bar-chart-fill"></i> Plotly Charts</span>
-          <span class="pill"><i class="bi bi-lightbulb-fill"></i> AI Insights</span>
-          <span class="pill"><i class="bi bi-file-earmark-pdf-fill"></i> PDF Reports</span>
-          <span class="pill"><i class="bi bi-shield-check"></i> Data Cleaning</span>
+        <!-- Page heading -->
+        <div class="page-heading">
+          <h1 class="page-title">Open a dataset</h1>
+          <p class="page-subtitle">Drop a CSV or Excel file up to 50 MB. Parsed locally in-memory without network roundtrips.</p>
         </div>
 
-        <!-- Drop Zone -->
-        <div id="drop-zone" class="drop-zone" role="button" tabindex="0"
-             aria-label="CSV Upload Drop Zone">
-          <div class="drop-zone-inner">
-            <div class="drop-icon-wrap">
-              <i class="bi bi-cloud-arrow-up-fill drop-icon"></i>
+        <!-- Upload Drop Zone -->
+        <div id="drop-zone" class="drop-zone" role="button" tabindex="0" aria-label="CSV upload drop zone">
+          <div class="drop-zone-left">
+            <div class="drop-arrow-icon"><i class="bi bi-download"></i></div>
+            <div class="drop-text">
+              <span class="drop-main">Drag and drop table files here, or <button class="link-btn" id="browse-btn">browse disk</button></span>
+              <span class="drop-hint">Supported: .csv, .tsv, .xlsx, .parquet (snappy)</span>
             </div>
-            <h3>Drag &amp; Drop your CSV or Excel here</h3>
-            <p>or</p>
-            <button class="btn btn-primary" id="browse-btn">
-              <i class="bi bi-folder2-open"></i> Browse Files
-            </button>
-            <input type="file" id="file-input" accept=".csv,.xlsx,.xls" hidden />
-            <p class="upload-hint">Supports any CSV/Excel up to 50 MB &nbsp;·&nbsp; No registration required</p>
           </div>
+          <button class="btn-browse" id="browse-btn-2">
+            Browse files <span class="browse-badge">0</span>
+          </button>
         </div>
 
         <div id="upload-error" class="alert-error hidden" role="alert"></div>
+
+        <!-- Recent Runs Table -->
+        <div class="section-block" id="recent-runs-block">
+          <div class="section-block-header">
+            <h2 class="section-block-title">RECENT LOCAL RUNS</h2>
+            <span class="section-block-meta" id="runs-meta">upload a file to begin</span>
+          </div>
+
+          <div class="data-table-wrap">
+            <table class="runs-table" id="runs-table">
+              <thead>
+                <tr>
+                  <th>Filename</th>
+                  <th>Size</th>
+                  <th>Rows</th>
+                  <th>Status</th>
+                  <th>Last analyzed</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="runs-tbody">
+                <tr class="empty-row">
+                  <td colspan="6">
+                    <span class="empty-hint"><i class="bi bi-upload"></i> Please Upload CSV File</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Schema & Parsing — shown after upload -->
+        <div class="section-block hidden" id="schema-block">
+          <div class="section-block-header">
+            <h2 class="section-block-title">SCHEMA &amp; PARSING PARAMETERS</h2>
+            <div class="schema-meta-row" id="schema-meta-row"></div>
+          </div>
+
+          <div class="schema-params-row" id="schema-params">
+            <span class="schema-param"><span class="sp-label">Encoding:</span> <span class="sp-val">UTF-8</span></span>
+            <span class="schema-param"><span class="sp-label">Delimiter:</span> <span class="sp-val" id="sp-delimiter">, (comma)</span></span>
+            <span class="schema-param"><span class="sp-label">Nulls:</span> <span class="sp-val">NaN, NULL, ""</span></span>
+          </div>
+
+          <div class="data-table-wrap">
+            <div id="preview-table-wrap"></div>
+          </div>
+
+          <div class="schema-footer">
+            <span class="schema-hint" id="schema-hint">Displaying sample top rows from parquet cache</span>
+            <div class="schema-actions">
+              <button class="link-btn-sm" onclick="app.downloadReport('csv')">Cast types</button>
+              <button class="link-btn-sm" onclick="app.downloadReport('excel')">Export DDL</button>
+              <button class="link-btn-sm primary" onclick="app.goToDashboard()">SQL scratchpad →</button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
     <!-- ── LOADING PAGE ── -->
     <section id="page-loading" class="page">
       <div class="loading-center">
-        <div class="loader-ring">
-          <div></div><div></div><div></div><div></div>
-        </div>
+        <div class="loader-ring"><div></div><div></div><div></div><div></div></div>
         <h2 id="loading-heading">Analyzing your dataset…</h2>
         <p id="loading-sub">This may take a few seconds for large files.</p>
         <div class="loading-steps">
@@ -143,105 +223,115 @@
     <!-- ── DASHBOARD PAGE ── -->
     <section id="page-dashboard" class="page">
 
-      <!-- ── OVERVIEW SECTION ── -->
+      <!-- OVERVIEW SECTION -->
       <div class="dash-section active" id="section-overview">
-        <div class="section-header">
-          <h2><i class="bi bi-grid-fill"></i> Overview Dashboard</h2>
-          <div class="header-actions">
-            <button class="btn btn-sm btn-outline" onclick="app.downloadReport('csv')">
-              <i class="bi bi-filetype-csv"></i> CSV
-            </button>
-            <button class="btn btn-sm btn-outline" onclick="app.downloadReport('excel')">
-              <i class="bi bi-file-earmark-excel"></i> Excel
-            </button>
-            <button class="btn btn-sm btn-primary" onclick="app.downloadReport('pdf')">
-              <i class="bi bi-file-earmark-pdf-fill"></i> PDF Report
-            </button>
-            <button class="btn btn-sm btn-danger" onclick="app.reset()">
-              <i class="bi bi-arrow-counterclockwise"></i> New Dataset
-            </button>
+        <div class="dash-section-inner">
+          <div class="section-header">
+            <h2><i class="bi bi-grid-fill"></i> Overview Dashboard</h2>
+            <div class="header-actions">
+              <button class="btn btn-sm btn-outline" onclick="app.downloadReport('csv')"><i class="bi bi-filetype-csv"></i> CSV</button>
+              <button class="btn btn-sm btn-outline" onclick="app.downloadReport('excel')"><i class="bi bi-file-earmark-excel"></i> Excel</button>
+              <button class="btn btn-sm btn-primary" onclick="app.downloadReport('pdf')"><i class="bi bi-file-earmark-pdf-fill"></i> PDF Report</button>
+              <button class="btn btn-sm btn-danger" onclick="app.reset()"><i class="bi bi-arrow-counterclockwise"></i> New Dataset</button>
+            </div>
+          </div>
+          <div id="dataset-info-row" class="dataset-info-row mb-3"></div>
+          <div id="kpi-grid" class="kpi-grid mb-3"></div>
+          <div id="health-card" class="glass-card mb-3 health-card"></div>
+          <div class="glass-card mb-3">
+            <h3 class="card-title"><i class="bi bi-table"></i> Dataset Preview (First 10 rows)</h3>
+            <div class="table-wrap" id="dash-preview-table-wrap"></div>
           </div>
         </div>
-
-        <!-- Dataset Info Row -->
-        <div id="dataset-info-row" class="dataset-info-row mb-3"></div>
-
-        <!-- KPI Grid -->
-        <div id="kpi-grid" class="kpi-grid mb-3"></div>
-
-        <!-- Data Health Card -->
-        <div id="health-card" class="glass-card mb-3 health-card"></div>
-
-        <!-- Preview Table -->
-        <div class="glass-card mb-3">
-          <h3 class="card-title"><i class="bi bi-table"></i> Dataset Preview (First 10 rows)</h3>
-          <div class="table-wrap" id="preview-table-wrap"></div>
-        </div>
       </div>
 
-      <!-- ── SALES SECTION ── -->
+      <!-- SALES SECTION -->
       <div class="dash-section" id="section-sales">
-        <div class="section-header">
-          <h2><i class="bi bi-currency-dollar"></i> Sales Analysis</h2>
+        <div class="dash-section-inner">
+          <div class="section-header">
+            <h2><i class="bi bi-currency-dollar"></i> Sales Analysis</h2>
+            <button class="btn btn-sm btn-danger" onclick="app.reset()"><i class="bi bi-arrow-counterclockwise"></i> New Dataset</button>
+          </div>
+          <div class="chart-grid" id="charts-sales"></div>
         </div>
-        <div class="chart-grid" id="charts-sales"></div>
       </div>
 
-      <!-- ── TIME SERIES SECTION ── -->
+      <!-- TIME SERIES SECTION -->
       <div class="dash-section" id="section-timeseries">
-        <div class="section-header">
-          <h2><i class="bi bi-graph-up-arrow"></i> Time Series Analysis</h2>
+        <div class="dash-section-inner">
+          <div class="section-header">
+            <h2><i class="bi bi-graph-up-arrow"></i> Time Series Analysis</h2>
+            <button class="btn btn-sm btn-danger" onclick="app.reset()"><i class="bi bi-arrow-counterclockwise"></i> New Dataset</button>
+          </div>
+          <div class="chart-grid" id="charts-timeseries"></div>
         </div>
-        <div class="chart-grid" id="charts-timeseries"></div>
       </div>
 
-      <!-- ── PROFIT SECTION ── -->
+      <!-- PROFIT SECTION -->
       <div class="dash-section" id="section-profit">
-        <div class="section-header">
-          <h2><i class="bi bi-cash-stack"></i> Profitability Analysis</h2>
+        <div class="dash-section-inner">
+          <div class="section-header">
+            <h2><i class="bi bi-cash-stack"></i> Profitability Analysis</h2>
+            <button class="btn btn-sm btn-danger" onclick="app.reset()"><i class="bi bi-arrow-counterclockwise"></i> New Dataset</button>
+          </div>
+          <div class="chart-grid" id="charts-profit"></div>
         </div>
-        <div class="chart-grid" id="charts-profit"></div>
       </div>
 
-      <!-- ── CUSTOMER SECTION ── -->
+      <!-- CUSTOMERS SECTION -->
       <div class="dash-section" id="section-customers">
-        <div class="section-header">
-          <h2><i class="bi bi-people-fill"></i> Customer Analysis</h2>
+        <div class="dash-section-inner">
+          <div class="section-header">
+            <h2><i class="bi bi-people-fill"></i> Customer Analysis</h2>
+            <button class="btn btn-sm btn-danger" onclick="app.reset()"><i class="bi bi-arrow-counterclockwise"></i> New Dataset</button>
+          </div>
+          <div class="chart-grid" id="charts-customers"></div>
         </div>
-        <div class="chart-grid" id="charts-customers"></div>
       </div>
 
-      <!-- ── PRODUCTS SECTION ── -->
+      <!-- PRODUCTS SECTION -->
       <div class="dash-section" id="section-products">
-        <div class="section-header">
-          <h2><i class="bi bi-box-seam"></i> Product Analysis</h2>
+        <div class="dash-section-inner">
+          <div class="section-header">
+            <h2><i class="bi bi-box-seam"></i> Product Analysis</h2>
+            <button class="btn btn-sm btn-danger" onclick="app.reset()"><i class="bi bi-arrow-counterclockwise"></i> New Dataset</button>
+          </div>
+          <div class="chart-grid" id="charts-products"></div>
         </div>
-        <div class="chart-grid" id="charts-products"></div>
       </div>
 
-      <!-- ── REGIONAL SECTION ── -->
+      <!-- REGIONAL SECTION -->
       <div class="dash-section" id="section-regional">
-        <div class="section-header">
-          <h2><i class="bi bi-geo-alt-fill"></i> Regional Analysis</h2>
+        <div class="dash-section-inner">
+          <div class="section-header">
+            <h2><i class="bi bi-geo-alt-fill"></i> Regional Analysis</h2>
+            <button class="btn btn-sm btn-danger" onclick="app.reset()"><i class="bi bi-arrow-counterclockwise"></i> New Dataset</button>
+          </div>
+          <div class="chart-grid" id="charts-regional"></div>
         </div>
-        <div class="chart-grid" id="charts-regional"></div>
       </div>
 
-      <!-- ── STATISTICS SECTION ── -->
+      <!-- STATISTICS SECTION -->
       <div class="dash-section" id="section-statistics">
-        <div class="section-header">
-          <h2><i class="bi bi-calculator"></i> Statistical Analysis</h2>
+        <div class="dash-section-inner">
+          <div class="section-header">
+            <h2><i class="bi bi-calculator"></i> Statistical Analysis</h2>
+            <button class="btn btn-sm btn-danger" onclick="app.reset()"><i class="bi bi-arrow-counterclockwise"></i> New Dataset</button>
+          </div>
+          <div id="stats-content" class="stats-content mb-3"></div>
+          <div class="chart-grid" id="charts-statistics"></div>
         </div>
-        <div id="stats-content" class="stats-content mb-3"></div>
-        <div class="chart-grid" id="charts-statistics"></div>
       </div>
 
-      <!-- ── INSIGHTS SECTION ── -->
+      <!-- INSIGHTS SECTION -->
       <div class="dash-section" id="section-insights">
-        <div class="section-header">
-          <h2><i class="bi bi-lightbulb-fill"></i> AI Business Insights</h2>
+        <div class="dash-section-inner">
+          <div class="section-header">
+            <h2><i class="bi bi-stars"></i> Model Insights</h2>
+            <button class="btn btn-sm btn-danger" onclick="app.reset()"><i class="bi bi-arrow-counterclockwise"></i> New Dataset</button>
+          </div>
+          <div id="insights-grid" class="insights-grid"></div>
         </div>
-        <div id="insights-grid" class="insights-grid"></div>
       </div>
 
     </section>
