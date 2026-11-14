@@ -1,7 +1,7 @@
 # Universal CSV Analytics Platform
 
 #live demo
-https://universal-csv-analytics.vercel.app/
+https://csv-analytics.vercel.app
 
 A professional, dynamic Data Analytics Platform that can ingest **any** CSV file, automatically analyze its structure, map its columns, and generate a comprehensive interactive dashboard containing KPIs, Plotly charts, AI Business Insights, and downloadable reports.
 
