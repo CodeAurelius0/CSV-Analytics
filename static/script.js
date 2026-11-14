@@ -176,9 +176,22 @@ const app = (() => {
   }
 
   // ──────────────────────────────────────────
+  //  Fetch with timeout helper
+  // ──────────────────────────────────────────
+  function fetchWithTimeout(url, options = {}, timeoutMs = 60000) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    return fetch(url, { ...options, signal: controller.signal })
+      .finally(() => clearTimeout(timer));
+  }
+
+  // ──────────────────────────────────────────
   //  Upload & Analyze
   // ──────────────────────────────────────────
   async function startUpload(file) {
+    // Reset loading steps for fresh upload
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active', 'done'));
+
     // Switch to loading page
     showAppPage('page-loading');
     setStatusBusy(true);
@@ -191,12 +204,12 @@ const app = (() => {
 
     let uploadData;
     try {
-      const res = await fetch('/upload', { method: 'POST', body: formData });
+      const res = await fetchWithTimeout('/upload', { method: 'POST', body: formData }, 60000);
       uploadData = await res.json();
     } catch (err) {
       showAppPage('page-overview');
       setStatusBusy(false);
-      showError('Network error during upload: ' + err.message);
+      showError('Network error during upload: ' + (err.name === 'AbortError' ? 'Request timed out.' : err.message));
       return;
     }
 
@@ -224,12 +237,12 @@ const app = (() => {
 
     let analysis;
     try {
-      const res = await fetch('/analyze/' + _filename);
+      const res = await fetchWithTimeout('/analyze/' + _filename, {}, 120000);
       analysis = await res.json();
     } catch (err) {
       showAppPage('page-overview');
       setStatusBusy(false);
-      showError('Analysis request failed: ' + err.message);
+      showError('Analysis request failed: ' + (err.name === 'AbortError' ? 'Request timed out (>2 min).' : err.message));
       return;
     }
 

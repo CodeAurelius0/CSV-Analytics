@@ -13,9 +13,6 @@
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 
-  <!-- Plotly -->
-  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
-
   <!-- Custom CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
@@ -340,6 +337,9 @@
   </div>
   <!-- /main-wrapper -->
 
+  <!-- Plotly (served locally — no CDN dependency) -->
+  <script src="{{ url_for('static', filename='plotly-2.27.0.min.js') }}"></script>
+  <!-- App script -->
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
