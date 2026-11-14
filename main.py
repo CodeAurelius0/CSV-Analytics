@@ -698,7 +698,7 @@ def analyze(filename):
         if "Date" in mapped_cols:
             try:
                 df[mapped_cols["Date"]] = pd.to_datetime(
-                    df[mapped_cols["Date"]], infer_datetime_format=True, errors="coerce"
+                    df[mapped_cols["Date"]], errors="coerce"
                 )
                 df = df.dropna(subset=[mapped_cols["Date"]])
             except Exception:
@@ -746,7 +746,7 @@ def download_report(fmt, filename):
         if "Date" in mapped_cols:
             try:
                 df[mapped_cols["Date"]] = pd.to_datetime(
-                    df[mapped_cols["Date"]], infer_datetime_format=True, errors="coerce"
+                    df[mapped_cols["Date"]], errors="coerce"
                 )
             except Exception:
                 pass
